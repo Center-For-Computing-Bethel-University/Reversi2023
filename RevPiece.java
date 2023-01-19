@@ -18,10 +18,9 @@ public class RevPiece extends Piece {
 	}
 	
 	public int getOpp(int inType) {
-		if (inType < MAX-1 || inType > MAX)
-			if (inType == 1) return 2;
-			else return 1;
-		return -1;
+		if (inType <= MIN || inType > MAX) return -1;
+		if (inType == WHITE) return BLACK;
+		else return WHITE;
 	}
 	
 	public char toChar() {

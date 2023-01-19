@@ -11,32 +11,23 @@
   */
 public class Board implements BoardInterface{
     // fields
-    /** pieces for the board */
     private Piece[][] pieces;
-    /** size of the board */
-    protected int size;  // not needed - can go by length but implemented instead
+    protected int size;
 
     // public class constants about generic games
-    /** the default size of the board */
     public static final int DEFAULTSIZE = 8;
-    /** if the move specified indicates ending the game */
     public static final int ENDGAME = -1;
-    /** if the move specified was legal */
     public static final int LEGALMOVE = 0;
-    /** if the move specified was illegal */
     public static final int BADMOVE = 1;
 
-//Constructors and related methods
-    /** create a board of the default size */
+    //Constructors and related methods
     public Board() {
         size = DEFAULTSIZE;
         pieces = new Piece[size][size];
         blankBoard();
     }
 
-    /** create a square board of the size requested
-      * @param inSize - size of board
-      */
+    //create a square board of the size requested
     public Board(int inSize) {
         size = inSize;
         pieces = new Piece[size][size];
