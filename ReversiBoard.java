@@ -3,17 +3,17 @@
   * @id          noah.jackson@betheluniversity.edu
   * @course      CSC 321: Programming 3
   * @assignment  Reversi Project
-  * @related     RevPiece, Board
+  * @related     ReversiPiece, Board
   */
-public class Reversi extends Board {
+public class ReversiBoard extends Board {
 	//Fields
-	private RevPiece[][] pieces;
+	private ReversiPiece[][] pieces;
 	private boolean up, upR, right, downR, down, downL, left, upL;
 	
 	//Constructor
-	public Reversi() {
+	public ReversiBoard() {
 		size = DEFAULTSIZE;
-        pieces = new RevPiece[size][size];
+        pieces = new ReversiPiece[size][size];
         up = false;
         upR = false;
         right = false;
@@ -26,22 +26,22 @@ public class Reversi extends Board {
 	}
 	
 	//Accessors
-	public RevPiece getPiece(int row, int column) {
+	public ReversiPiece getPiece(int row, int column) {
         return pieces[row][column];
     }
 	
 	//Class methods
-	private void setGame() {
+	public void setGame() {
         for (int row = 0; row < size; row++)
             for (int column = 0; column < size; column++)
-                pieces[row][column] = new RevPiece(Piece.BLANK);
+                pieces[row][column] = new ReversiPiece(Piece.BLANK);
         getPiece(3,3).setType(2);
 		getPiece(3,4).setType(1);
 		getPiece(4,3).setType(1);
 		getPiece(4,4).setType(2);
     }	
 	
-	public void makeMove(int row, int col, RevPiece piece) {
+	public void makeMove(int row, int col, ReversiPiece piece) {
 		int team, rowStep, colStep;
 		team = piece.getType();
 		rowStep = row;
@@ -137,7 +137,7 @@ public class Reversi extends Board {
 		}
 	}
 	
-	public boolean isValid(int row, int col, RevPiece piece) { 
+	public boolean isValid(int row, int col, ReversiPiece piece) { 
 		int team, rowStep, colStep;
 		team = piece.getType();
 		rowStep = row;
@@ -241,9 +241,21 @@ public class Reversi extends Board {
 		return false;
 	}
 	
+	//Returns the score of a given player
+	public int getScore(int team) {
+		int counter;
+		counter = 0;
+		for(int i=0; i<8;i++) 
+			for(int j=0; j<8;j++) 
+				if(getPiece(i,j).getType() == team) {
+					counter++;
+				}	
+		return counter;
+	}
+	
 	//Checks for possible moves by either team
 	public boolean gameOver() {
-		RevPiece tester = new RevPiece(Piece.BLANK);
+		ReversiPiece tester = new ReversiPiece(Piece.BLANK);
 		
 		for(int team=1; team <= 2; team++) {
 			tester.setType(team);

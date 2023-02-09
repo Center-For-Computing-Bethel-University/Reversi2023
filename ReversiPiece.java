@@ -5,11 +5,11 @@
   * @assignment  Reversi Project
   * @related     Piece
   */
-public class RevPiece extends Piece {
+public class ReversiPiece extends Piece {
 	public static final int WHITE = 1;
 	public static final int BLACK = 2;
 	
-	public RevPiece(int inType) {
+	public ReversiPiece(int inType) {
 		super(inType);
 	}
 	
