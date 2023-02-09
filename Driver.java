@@ -3,17 +3,15 @@
   * @id          noah.jackson@betheluniversity.edu
   * @course      CSC 321: Programming 3
   * @assignment  Reversi Project
-  * @related     Reversi, RevPiece
+  * @related     ReversiBoard, ReversiPiece, Gui
   */
 public class Driver {
 	public static void main(String[] args) {
-		Reversi board;
-		RevPiece testmove;
+		ReversiBoard board;
+		Gui gui;
 		
-		board = new Reversi();
-		testmove = new RevPiece(2);
-		
-		board.makeMove(5, 3, testmove);
+		board = new ReversiBoard();
+		gui = new Gui(board);
 		
 		//prints game board
 		for(int i=0; i<8;i++) {
