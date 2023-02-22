@@ -12,7 +12,7 @@ import java.awt.event.*;
 
 public class Gui extends JFrame{
     private JButton[][] buttons;
-    private JButton reset;
+    private JButton reset,quit, save, load;
     private JLabel player1, player2;
     private Listener myListener;    
     private Color black;
@@ -101,6 +101,27 @@ public class Gui extends JFrame{
         reset.setSize(1000, 1000);
         infoPanel.add(reset);
         
+      //creates and adds the quit buttons
+        quit = new JButton("Quit");
+        quit.addActionListener(myListener);
+        quit.setEnabled(true);
+        quit.setSize(1000, 1000);
+        infoPanel.add(quit);
+        
+      //creates and adds the save buttons
+        save = new JButton("Save Game");
+        save.addActionListener(myListener);
+        save.setEnabled(true);
+        save.setSize(1000, 1000);
+        infoPanel.add(save);
+        
+      //creates and adds the load Game buttons
+        load = new JButton("Load Game");
+        load.addActionListener(myListener);
+        load.setEnabled(true);
+        load.setSize(1000, 1000);
+        infoPanel.add(load);
+        
         //configures the swing window
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1000,1000);
@@ -116,7 +137,10 @@ public class Gui extends JFrame{
         		game.setGame();
         		updateGraphics();
         	}
-        	
+        	//if quit is pressed, window is terminated
+        	if(e.getSource()==quit) {
+        		System.exit(ABORT);
+        	}
         	//Checks if any of the game buttons have been pressed
         	for(int i=0; i < Board.DEFAULTSIZE; i++)
         		for(int j=0; j < Board.DEFAULTSIZE; j++) 
