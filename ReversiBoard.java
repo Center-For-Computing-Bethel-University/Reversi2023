@@ -31,7 +31,6 @@ public class ReversiBoard extends Board {
         for (row = 0; row < size; row++)
             for (column = 0; column < size; column++)
                 pieces[row][column] = new ReversiPiece(Piece.BLANK);
-
     }
 	
 	public void setGame() {
@@ -40,11 +39,6 @@ public class ReversiBoard extends Board {
 		getPiece(4,3).setType(1);
 		getPiece(4,4).setType(2);
     }	
-	
-	public boolean onBoard(int x, int y) {
-        if (x> size-1 || x<0 || y> size-1 || y<0) return false;
-        return true;
-    }
 	
 	public void makeMove(int row, int col, ReversiPiece piece) {
 		int color, rowStep, colStep;
@@ -55,28 +49,41 @@ public class ReversiBoard extends Board {
 		int[] dirValues;
 		dirValues = new int[4];
 		
-		if (isValid(row, col, piece)) {
-			pieces[row][col] = piece;
-			
-			for(int i=0; i<8;i++) {
-				dirValues = dirChange(i, dirValues);
 	
-				if(dir[i]) {
+		isValid(row, col, piece);
+		
+		//Checks for instance where all directions are false
+		int counter;
+		counter = 0;
+		for(int i=0; i<8;i++) 
+			if (!dir[i]) counter++;
+		if(counter == 8) {
+			System.err.println("Invalid Move");
+			return;
+		}
+		//_______________________________________
+		
+		pieces[row][col] = piece;
+		
+		//Flipping of the pieces
+		for(int i=0; i<8;i++) {
+			dirValues = dirChange(i, dirValues);
+	
+			if(dir[i]) {
+				rowStep+= dirValues[ROWCHANGE];
+				colStep+= dirValues[COLCHANGE];
+				while(getPiece(rowStep,colStep).getType() == piece.getOpp(color)) { 
+					getPiece(rowStep,colStep).setType(color);
 					rowStep+= dirValues[ROWCHANGE];
 					colStep+= dirValues[COLCHANGE];
-					while(getPiece(rowStep,colStep).getType() == piece.getOpp(color)) { 
-						getPiece(rowStep,colStep).setType(color);
-						rowStep+= dirValues[ROWCHANGE];
-						colStep+= dirValues[COLCHANGE];
-					}
-					rowStep = row;
-					colStep = col;
 				}
+				rowStep = row;
+				colStep = col;
 			}
 		}
 	}
 	
-	public boolean isValid(int row, int col, ReversiPiece piece) {
+	public void isValid(int row, int col, ReversiPiece piece) {
 		int color, rowStep, colStep;
 		color = piece.getType();
 		rowStep = row;
@@ -85,7 +92,7 @@ public class ReversiBoard extends Board {
 		int[] dirValues;
 		dirValues = new int[4];
 		
-		if(!onBoard(row, col)) return false; 			 //checks in the piece is off the board
+		if(!onBoard(row, col)) return; 			 //checks in the piece is off the board
 		if (pieces[row][col].getType() == Piece.BLANK) { //check for blank type
 			for(int i=0; i<8;i++) {						 //For loop for each direction
 				dirValues = dirChange(i, dirValues);	 //Sets the direction values for the new direction
@@ -99,13 +106,15 @@ public class ReversiBoard extends Board {
 					}
 					
 					if(getPiece(row + dirValues[ROWCHANGE], col + dirValues[COLCHANGE]).getType() != color) 
-						if(getPiece(rowStep,colStep).getType() == color) {dir[i] = true; return true;}
+						if(getPiece(rowStep,colStep).getType() == color) {
+							dir[i] = true;
+						} else dir[i] = false;
+						
 					rowStep = row; //resets steppers for next iteration
 					colStep = col;
 				}
 			}
 		}
-		return false;
 	}
 	
 	//Provides relevant values for queried direction
@@ -189,7 +198,10 @@ public class ReversiBoard extends Board {
 			tester.setType(team);
 			for(int i=0; i<8;i++) 
 				for(int j=0; j<8;j++) {
-					if(isValid(i,j,tester)) return true;
+					isValid(i,j,tester);
+					for(int k=0; k<8; k++) {
+						if (dir[k]) return true;
+					}
 				}
 		}
 		return false;
