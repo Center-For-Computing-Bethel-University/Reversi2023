@@ -85,9 +85,11 @@ public class ReversiBoard extends Board {
 	
 	public void isValid(int row, int col, ReversiPiece piece) {
 		int color, rowStep, colStep;
+		boolean border; 		//variable that informs if a move is on the border
 		color = piece.getType();
 		rowStep = row;
 		colStep = col;
+		border = false;
 		
 		int[] dirValues;
 		dirValues = new int[4];
@@ -100,18 +102,25 @@ public class ReversiBoard extends Board {
 				if(row != dirValues[ROWBOUNDARY] || col != dirValues[COLBOUNDARY]) { //sets the boundaries so the steppers
 					rowStep+= dirValues[ROWCHANGE];									 //don't go <8 or >0
 					colStep+= dirValues[COLCHANGE];
-					while(getPiece(rowStep,colStep).getType() == piece.getOpp(color)) {  //Checks direction until there is an opp color
-						rowStep+= dirValues[ROWCHANGE];
-						colStep+= dirValues[COLCHANGE];
+					//try and catch for pieces that are on the border of the board
+					try {
+						while(getPiece(rowStep,colStep).getType() == piece.getOpp(color)) {  //Checks direction until there is an opp color
+							rowStep+= dirValues[ROWCHANGE];
+							colStep+= dirValues[COLCHANGE];
+						}
+					} catch (ArrayIndexOutOfBoundsException e) {
+						border = true; 
 					}
-					
-					if(getPiece(row + dirValues[ROWCHANGE], col + dirValues[COLCHANGE]).getType() != color) 
-						if(getPiece(rowStep,colStep).getType() == color) {
-							dir[i] = true;
-						} else dir[i] = false;
+					if(border) dir[i] = false; 
+					else {
+						if(getPiece(row + dirValues[ROWCHANGE], col + dirValues[COLCHANGE]).getType() != color) 
+							if(getPiece(rowStep,colStep).getType() == color) {
+								dir[i] = true;
+							} else dir[i] = false;
 						
-					rowStep = row; //resets steppers for next iteration
-					colStep = col;
+						rowStep = row; //resets steppers for next iteration
+						colStep = col;
+					}
 				}
 			}
 		}
