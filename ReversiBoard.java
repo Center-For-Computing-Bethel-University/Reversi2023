@@ -81,6 +81,7 @@ public class ReversiBoard extends Board {
 				colStep = col;
 			}
 		}
+		for(int i=0; i<8;i++) dir[i] = false;
 	}
 	
 	public void isValid(int row, int col, ReversiPiece piece) {
