@@ -81,7 +81,6 @@ public class ReversiBoard extends Board {
 				colStep = col;
 			}
 		}
-		for(int i=0; i<8;i++) dir[i] = false;
 	}
 	
 	public void isValid(int row, int col, ReversiPiece piece) {
@@ -92,6 +91,7 @@ public class ReversiBoard extends Board {
 		colStep = col;
 		border = false;
 		
+		for(int i=0; i<8;i++) dir[i] = false; //reset the dir values back to false
 		int[] dirValues;
 		dirValues = new int[4];
 		
@@ -125,6 +125,15 @@ public class ReversiBoard extends Board {
 				}
 			}
 		}
+	}
+	
+	//Determines whether a move is legal
+	public boolean isLegal(int row, int col, int team) {
+		ReversiPiece piece = new ReversiPiece(team);
+		isValid(row, col, piece);
+		for(int i=0; i<8; i++) 
+			if (dir[i]) return true;
+		return false;
 	}
 	
 	//Provides relevant values for queried direction
